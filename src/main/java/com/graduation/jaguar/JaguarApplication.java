@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan(basePackages = { "com.graduation.jaguar.core.common", "com.graduation.jaguar.core.service","com.graduation.jaguar.core.dal","com.graduation.jaguar.web"})
 @MapperScan(basePackages = {"com.graduation.jaguar.core.dal.dao"})
-@SpringBootApplication(exclude = {HibernateJpaAutoConfiguration.class },scanBasePackages = "com.graduation.jaguar")
+@SpringBootApplication(exclude = {HibernateJpaAutoConfiguration.class},scanBasePackages = "com.graduation.jaguar")
 public class JaguarApplication {
 
     public static void main(String[] args) {
