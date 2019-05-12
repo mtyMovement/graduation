@@ -8,4 +8,5 @@ package com.graduation.jaguar.core.service;/*
 
 public interface TestService {
     void testSQLConnection();
+    void testQiniuConnection() throws Exception;
 }

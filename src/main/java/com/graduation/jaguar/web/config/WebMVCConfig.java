@@ -11,8 +11,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         //将 /front/src/login/** 的请求 映射到 /front/src/login/下
-        /*registry.addResourceHandler("/static/**")
+        registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
-*/
     }
 }

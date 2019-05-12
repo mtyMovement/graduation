@@ -20,11 +20,37 @@ public class TestController {
     public String testController(){
         //testController.html
         testService.testSQLConnection();
-        return "testController.html";
+        return "videoTest";
+    }
+
+    @RequestMapping("/testQiniu")
+    public String qiniuController() throws Exception{
+        testService.testQiniuConnection();
+        return "testController";
     }
 
     @RequestMapping("/login")
     public String loginController(){
+        return "login";
+    }
+
+    @RequestMapping("/single")
+    public String singleTest(){
+        return "single";
+    }
+
+    @RequestMapping("/index")
+    public String indexTest(){
         return "index";
+    }
+
+    @RequestMapping("/gallery")
+    public String galleryTest(){
+        return "gallery";
+    }
+
+    @RequestMapping("/contact")
+    public String contactTest(){
+        return "contact";
     }
 }
