@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.jaguar.core.dal.dao.VideoDao">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.graduation.jaguar.core.dal.domain.Video">
+                    <id column="video_id" property="videoId"/>
+                    <result column="user_id" property="userId"/>
+                    <result column="video_name" property="videoName"/>
+                    <result column="video_url" property="videoUrl"/>
+                    <result column="video_interested" property="videoInterested"/>
+                    <result column="video_audit_status" property="videoAuditStatus"/>
+                    <result column="video_audit_time" property="videoAuditTime"/>
+                    <result column="video_classify" property="videoClassify"/>
+                    <result column="is_deleted" property="isDeleted"/>
+                    <result column="create_time" property="createTime"/>
+                    <result column="modify_time" property="modifyTime"/>
+        </resultMap>
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+       video_id,user_id,video_name,video_url,video_interested,video_audit_status,video_audit_time,video_classify,is_deleted,create_time,modify_time
+        </sql>
+</mapper>

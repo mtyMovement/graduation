@@ -6,6 +6,7 @@ package com.graduation.jaguar.core.service.impl;/*
 
 
 import com.graduation.jaguar.core.common.util.QiniuService;
+import com.graduation.jaguar.core.dal.domain.User;
 import com.graduation.jaguar.core.dal.manager.impl.UserManagerImpl;
 import com.graduation.jaguar.core.service.TestService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,9 @@ public class TestServiceImpl implements TestService {
     @Override
     public void testSQLConnection() {
 
-        log.info(userManager.queryUserInfo().toString());
+        User user = new User();
+        user.setUserId(1);
+        log.info(userManager.selectOne(user).toString());
 
     }
 
@@ -41,5 +44,8 @@ public class TestServiceImpl implements TestService {
 
         log.info("testQiniuConnection:开始获取文件url");
         qiniuService.getFileUrl("动物世界");
+
+        log.info("testQiniuConnection:开始获取视频截图");
+        qiniuService.qiNiuMediaPrtScreen("动物世界.mp4","jpg","854" , "478");
     }
 }

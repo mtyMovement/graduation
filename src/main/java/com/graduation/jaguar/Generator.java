@@ -18,7 +18,7 @@ public class Generator {
 
     public static String[] tables = {
 
-            "User",
+            "Video","user",
     };
 
     public static void main(String[] args) {

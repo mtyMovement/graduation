@@ -79,7 +79,7 @@
 			<li class="colour-1"><a href="gallery.html">Top News</a></li>
 			<li class="colour-2"><a href="gallery.html">Sport</a></li>
 			<li class="colour-3"><a href="gallery.html">Music</a></li>
-			<li class="colour-4"><a href="gallery.html">TV Show</a></li>
+			<li class="colour-4"><a href="javascript:switchVideo()">TV Show</a></li>
 			<li class="colour-5"><a href="gallery.html">Cartoons</a></li>
 			<li class="colour-6"><a href="gallery.html">Tech</a></li>
 			<li class="colour-7"><a href="gallery.html">iOS</a></li>
@@ -92,7 +92,7 @@
 			<div class="row">
 				<div id="main-content" class="col-2-3">
 					<div class="wrap-vid">
-						<iframe width="100%" height="400" src="http://pqrjltppb.bkt.clouddn.com/%E5%8A%A8%E7%89%A9%E4%B8%96%E7%95%8C.mp4" frameborder="0" allowfullscreen></iframe>
+						<iframe id="iframeVideo" width="100%" height="400" src="http://pqrjltppb.bkt.clouddn.com/%E5%8A%A8%E7%89%A9%E4%B8%96%E7%95%8C.mp4" frameborder="0" allowfullscreen></iframe>
 					</div>
 					<div class="row">
 						<div class="share">
@@ -556,5 +556,40 @@
 
     });
     </script>
+
+	<script>
+		function switchVideo() {
+			/*var user = {
+				phone : $("#phone").val(),
+				password : $("#password").val()
+			};*/
+			var videoId = 6;
+
+			console.log(videoId);
+			$.ajax({
+				type: 'POST',
+				url: "/test/testSwitch",
+				data: JSON.stringify(videoId),
+				cache: false,
+				async: false,
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				success: function (data) {
+					/*if (data.code === "200") {
+						localStorage.setItem("user", JSON.stringify(data.data));
+						window.location.href = "../to/index";
+					}
+					if (data.code === "1000") {
+						alert("手机号或密码错误! 请重新输入!");
+						/!*$("#phone").val("");
+						$("#password").val("");*!/
+					}*/
+					$('#iframeVideo').attr("src",data.data.videoUrl);
+					console.log(data.toString());
+
+				}
+			});
+		}
+	</script>
 </div>
 </body></html>

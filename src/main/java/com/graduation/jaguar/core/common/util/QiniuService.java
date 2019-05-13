@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 import com.graduation.jaguar.core.common.base.QiniuMedia;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import com.qiniu.api.auth.AuthException;
 import com.qiniu.api.auth.digest.Mac;
@@ -41,8 +43,8 @@ public class QiniuService {
     private String domain;
     private String accessKey = "";
     private String secretKey = "";
-    public static final String JPG = ".jpg";
-    public static final String FLV = ".flv";
+    public static final String JPG = "jpg";
+    public static final String FLV = "flv";
 
     /**
      * 初始化参数设置
@@ -148,6 +150,12 @@ public class QiniuService {
         return downloadUrl;
     }
 
+    /**
+     * 获取文件 url (需要先查询文件是否存在)
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
     public String getFileUrl(String fileName) throws Exception{
         boolean isFileExist = isExist(fileName);
         if(isFileExist){
@@ -156,6 +164,19 @@ public class QiniuService {
             return fileUrl;
         }
         return "";
+    }
+
+    public String buildFileUrl(String fileName){
+        String fileUrl = "";
+        if(StringUtils.isNotEmpty(fileName)){
+            try {
+                fileUrl = URLUtils.makeBaseUrl(this.domain, fileName);
+            } catch (EncoderException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return fileUrl;
     }
 
     /**
@@ -208,12 +229,21 @@ public class QiniuService {
 
     /**
      * 七牛的视频截图
-     * @param fileName
-     * @param format
+     * @param fileName 文件名
+     * @param format  图片格式
+     * @param width  宽度
+     * @param height  高度
      * @return
      */
-    public String qiNiuMediaPrtScreen(String fileName, String format) {
-
+    public String qiNiuMediaPrtScreen(String fileName, String format,String width,String height) {
+        //判空
+        if(StringUtils.isEmpty(fileName) || StringUtils.isEmpty(width) ||StringUtils.isEmpty(height)){
+            return null;
+        }
+        //如果未设置 format 默认为 jpg 格式
+        if(StringUtils.isEmpty(format)){
+            format = "jpg";
+        }
         String screenPic = "";
         long startTime = System.currentTimeMillis();// 获取当前时间
         // 身份验证
@@ -226,17 +256,14 @@ public class QiniuService {
         String bucket = bucketName;
         String key = fileName;
         // 设置截图操作参数
-        String fops = "vframe/" + format + "/offset/1/w/640/h/480/rotate/auto";
-        // 设置截图的队列
-        String pipeline = bucketName;
+        String fops = "vframe/" + format + "/offset/1/w/"+ width + "/h/"+ height +"/rotate/auto";
         // 可以对截图后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间。
         String str = fileName.substring(0, fileName.indexOf("."));
         String urlbase64 = UrlSafeBase64.encodeToString(bucketName + ":" + str
                 + "." + format);
         String pfops = fops + "|saveas/" + urlbase64;
         // 设置pipeline参数
-        StringMap params = new StringMap().putWhen("force", 1, true)
-                .putNotEmpty("pipeline", pipeline);
+        StringMap params = new StringMap().putWhen("force", 1, true);
         try {
             String persistid = operater.pfop(bucket, key, pfops, params);
 
@@ -251,7 +278,6 @@ public class QiniuService {
                 log.error(e1.getMessage());
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         long endTime = System.currentTimeMillis();

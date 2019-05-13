@@ -23,47 +23,47 @@ public class User extends BaseModel {
 
     private static final long serialVersionUID = 1L;
     /**
-     * userè¡¨ä¸»é”®
+     * user表主键
      */
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
     /**
-     * ç”¨æˆ·è´¦å·  è‡ªåŠ¨ç”Ÿæˆ
+     * 用户账号  自动生成
      */
     @TableField("user_no")
     private String userNo;
     /**
-     * ç”¨æˆ·ç±»åž‹  0-æ™®é€šè´¦æˆ·  5-æ³¨å†Œä¼šå‘˜  10-ç®¡ç†å‘˜
+     * 用户类型  0-普通账户  5-注册会员  10-管理员
      */
     @TableField("user_type")
     private Integer userType;
     /**
-     * ç”¨æˆ·å¯†ç   æ™®é€šè´¦æˆ·å¯ä¸ºç©º
+     * 用户密码  普通账户可为空
      */
     @TableField("user_pwd")
     private String userPwd;
     /**
-     * ç”¨æˆ·æ˜µç§°
+     * 用户昵称
      */
     @TableField("user_name")
     private String userName;
     /**
-     * ç”¨æˆ·æ˜¯å¦é€»è¾‘åˆ é™¤ 0-æœªåˆ é™¤  1-å·²åˆ é™¤
+     * 用户是否逻辑删除 0-未删除  1-已删除
      */
     @TableField("user_isdelete")
     private Integer userIsdelete;
     /**
-     * ç”¨æˆ·æ„Ÿå…´è¶£çš„ç±»åž‹
+     * 用户感兴趣的类型
      */
     @TableField("user_interest")
     private String userInterest;
     /**
-     * åˆ›å»ºæ—¶é—´
+     * 创建时间
      */
     @TableField("gmt_create")
     private Date gmtCreate;
     /**
-     * ä¿®æ”¹æ—¶é—´
+     * 修改时间
      */
     @TableField("gmt_modified")
     private Date gmtModified;
