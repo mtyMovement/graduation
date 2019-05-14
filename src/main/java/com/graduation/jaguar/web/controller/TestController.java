@@ -29,13 +29,12 @@ public class TestController {
         //testController.html
         //testService.testSQLConnection();
 
-        /*VideoUploadDTO videoUploadDTO = new VideoUploadDTO();
+        VideoUploadDTO videoUploadDTO = new VideoUploadDTO();
         videoUploadDTO.setUserId(1);
-        videoUploadDTO.setVideoAddress("E:/work/video/我害怕.mp4");
-        videoService.uplaodVideo(videoUploadDTO);*/
+        videoUploadDTO.setVideoAddress("E:/work/video/纸短情长.mp4");
+        videoService.uplaodVideo(videoUploadDTO);
 
-
-        log.info(videoService.getVideoInfo(5).toString());
+        //log.info(videoService.getVideoInfo(5).toString());
         return "testController";
     }
 

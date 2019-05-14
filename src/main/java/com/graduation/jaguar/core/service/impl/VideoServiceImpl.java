@@ -15,12 +15,15 @@ import com.graduation.jaguar.core.dal.manager.impl.VideoManagerImpl;
 import com.graduation.jaguar.core.service.VideoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -61,8 +64,38 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public APIResult<VideoInfoVO> getVideoInfo(Integer videoId) {
-        VideoInfoVO videoInfoVO = new VideoInfoVO();
         Video video = videoManager.selectVideoByVideoId(videoId);
+        VideoInfoVO videoInfoVO = buildVideoInfoVO(video);
+        log.info("获取 video 信息, videoId:{},videoInfo：{}", video, videoInfoVO);
+        return APIResult.ok(videoInfoVO);
+    }
+
+    @Override
+    public APIResult<List<VideoInfoVO>> getHottestVideoInfos(Integer limitNum) {
+        List<Video> videoList =  videoManager.getSatisfactoryVideo("video_interested",false,limitNum);
+        List<VideoInfoVO> videoInfoVOS = videoList.stream()
+                .map(videoValue -> buildVideoInfoVO(videoValue))
+                .collect(Collectors.toList());
+        if(CollectionUtils.isEmpty(videoInfoVOS)){
+            return APIResult.error("252","未查找到视频");
+        }
+        return APIResult.ok(videoInfoVOS);
+    }
+
+    @Override
+    public APIResult<List<VideoInfoVO>> getNewestVideoInfos(Integer limitNum) {
+        List<Video> videoList =  videoManager.getSatisfactoryVideo("video_audit_time",false,limitNum);
+        List<VideoInfoVO> videoInfoVOS = videoList.stream()
+                .map(videoValue -> buildVideoInfoVO(videoValue))
+                .collect(Collectors.toList());
+        if(CollectionUtils.isEmpty(videoInfoVOS)){
+            return APIResult.error("252","未查找到视频");
+        }
+        return APIResult.ok(videoInfoVOS);
+    }
+
+    public VideoInfoVO buildVideoInfoVO(Video video){
+        VideoInfoVO videoInfoVO = new VideoInfoVO();
         String userName = userManager.getUserNameById(video.getUserId());
         try {
             BeanUtils.copyProperties(videoInfoVO, video);
@@ -76,13 +109,12 @@ public class VideoServiceImpl implements VideoService {
         videoInfoVO.setVideoAuditTime(videoAuditTime);
         //根据用户id获取用户昵称
         if(StringUtils.isEmpty(userName)){
-            return APIResult.error("251", "未查到用户姓名");
+            return null;
         }
         videoInfoVO.setUserName(userName);
 
         String videoJPGName = video.getVideoName() + ".jpg";
         videoInfoVO.setVideoJPGUrl(qiniuService.buildFileUrl(videoJPGName));
-        log.info("获取 video 信息, videoId:{},videoInfo：{}", video, videoInfoVO);
-        return APIResult.ok(videoInfoVO);
+        return videoInfoVO;
     }
 }
