@@ -7,6 +7,7 @@ package com.graduation.jaguar.core.service;/*
 import com.graduation.jaguar.core.common.DTO.VideoUploadDTO;
 import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
+import com.graduation.jaguar.core.common.enums.OperateTypeEnum;
 
 import java.util.List;
 
@@ -37,4 +38,12 @@ public interface VideoService {
      * @return
      */
     APIResult<List<VideoInfoVO>> getNewestVideoInfos(Integer limitNum);
+
+    /**
+     * 记录操作 点赞、转发、评论点赞等
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    APIResult<Integer> operateRecord(Integer userId, Integer videoId, OperateTypeEnum operateTypeEnum);
 }

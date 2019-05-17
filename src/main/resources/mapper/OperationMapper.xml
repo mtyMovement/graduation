@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.jaguar.core.dal.dao.OperationDao">
+
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.graduation.jaguar.core.dal.domain.Operation">
+                    <id column="operation_id" property="operationId"/>
+                    <result column="user_id" property="userId"/>
+                    <result column="diff_type_id" property="diffTypeId"/>
+                    <result column="operate_type" property="operateType"/>
+                    <result column="remark" property="remark"/>
+                    <result column="is_valid" property="isValid"/>
+                    <result column="create_time" property="createTime"/>
+                    <result column="modify_time" property="modifyTime"/>
+        </resultMap>
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+       operation_id,user_id,diff_type_id,operate_type,remark,is_valid,create_time,modify_time
+        </sql>
+</mapper>

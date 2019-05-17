@@ -7,9 +7,11 @@ package com.graduation.jaguar.core.service.impl;/*
 import com.graduation.jaguar.core.common.DTO.VideoUploadDTO;
 import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
+import com.graduation.jaguar.core.common.enums.OperateTypeEnum;
 import com.graduation.jaguar.core.common.util.DateUtil;
 import com.graduation.jaguar.core.common.util.QiniuService;
 import com.graduation.jaguar.core.dal.domain.Video;
+import com.graduation.jaguar.core.dal.manager.impl.OperationManagerImpl;
 import com.graduation.jaguar.core.dal.manager.impl.UserManagerImpl;
 import com.graduation.jaguar.core.dal.manager.impl.VideoManagerImpl;
 import com.graduation.jaguar.core.service.VideoService;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -36,6 +39,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     UserManagerImpl userManager;
+
+    @Autowired
+    OperationManagerImpl operationManager;
 
     @Override
     @Transactional
@@ -92,6 +98,22 @@ public class VideoServiceImpl implements VideoService {
             return APIResult.error("252","未查找到视频");
         }
         return APIResult.ok(videoInfoVOS);
+    }
+
+    @Override
+    public APIResult<Integer> operateRecord(Integer userId, Integer videoId, OperateTypeEnum operateTypeEnum) {
+        Integer msg = -1;
+        if(Objects.nonNull(operateTypeEnum) && Objects.equals(operateTypeEnum,OperateTypeEnum.OPERATE_VIDEO_INTEREST)){
+            msg = operationManager.interestVideo(userId, videoId);
+        }else if(Objects.nonNull(operateTypeEnum) && Objects.equals(operateTypeEnum,OperateTypeEnum.OPERATE_VIDEO_SHARE)){
+
+        }
+        //返回值判断
+        if(msg == -1){
+            return APIResult.error("254","记录信息有误，请联系管理员修改");
+        }else{
+            return APIResult.ok(msg);
+        }
     }
 
     public VideoInfoVO buildVideoInfoVO(Video video){

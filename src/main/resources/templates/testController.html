@@ -6,5 +6,25 @@
 </head>
 <body>
 It's a test controller page.
+<span id="test">
+</span>
+<script src="/static/js/jquery-2.1.1.js"></script>
+<script>
+    $(document).ready(function() {
+        console.log("我先初始化");
+        var test = '[[${video}]]';
+        console.log(test);
+
+    });
+</script>
+<script>
+    jQuery(document).ready(function () {
+        console.log("初始化");
+        var test = '[[${video}]]';
+        console.log(test);
+        $('#test').text("test:" + test);
+    });
+</script>
 </body>
+
 </html>

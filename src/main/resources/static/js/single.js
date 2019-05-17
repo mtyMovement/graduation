@@ -13,23 +13,6 @@ $(document).ready(function () {
 
 });
 
-jQuery(document).ready(function () {
-    $.ajax({
-        type: 'GET',
-        url: "/video/initPageSingle",
-        cache: false,
-        async: false,
-        dataType: "json",
-        contentType: "application/json;charset=utf-8",
-        success: function (result) {
-            var newestVideoResult = result.data["newestResult"];
-            var hottestVideoResult = result.data["hottestResult"];
-            initNewestVideos(newestVideoResult);
-            initHottestVideos(hottestVideoResult);
-        }
-    });
-});
-
 
 function switchVideo(videoId) {
     console.log(videoId);
@@ -51,11 +34,26 @@ function switchVideo(videoId) {
                 /!*$("#phone").val("");
                 $("#password").val("");*!/
             }*/
-            $('#iframeVideo').attr("src", data.data.videoUrl);
+            $('#iframeVideoIFrame').attr("src", data.data.videoUrl);
+            $('.iframeVideoInterest').text(data.data.videoInterested);
+            $('#iframeVideoName').text(data.data.videoName);
+            $('#iframeVideoUserName').text(data.data.userName);
+            $('#iframeVideoAuditTime').text(data.data.videoAuditTime);
+            $('#iframeVideoInterestHref').attr("href", "javascript:interestVideo(1," + data.data.videoId + ")");
             console.log(data.toString());
 
         }
     });
+}
+
+function initPlayVideo(videoInfo) {
+    console.log(videoInfo);
+    $('#iframeVideoIFrame').attr("src", videoInfo.videoUrl);
+    $('.iframeVideoInterest').text(videoInfo.videoInterested);
+    $('#iframeVideoName').text(videoInfo.videoName);
+    $('#iframeVideoUserName').text(videoInfo.userName);
+    $('#iframeVideoAuditTime').text(videoInfo.videoAuditTime);
+    $('#iframeVideoInterestHref').attr("href", "javascript:interestVideo(1," + videoInfo.videoId + ")");
 }
 
 function initNewestVideos(resultData){
@@ -109,4 +107,41 @@ function initHottestVideos(resultData){
 
     }
     $("#topNews").html(html);
+}
+
+//操作类型 0-视频点赞  1-视频分享  2-评论点赞
+function interestVideo(userId,videoId) {
+    console.log(userId,videoId);
+    $.ajax({
+        type: 'GET',
+        url: "/video/operateRecord",
+        data: {userId:userId, videoId:videoId, operateType:0},
+        cache: false,
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (data) {
+            /*if (data.code === "200") {
+                localStorage.setItem("user", JSON.stringify(data.data));
+                window.location.href = "../to/index";
+            }
+            if (data.code === "1000") {
+                alert("手机号或密码错误! 请重新输入!");
+                /!*$("#phone").val("");
+                $("#password").val("");*!/
+            }*/
+            if (data.success === true) {
+                var preInterestNum = $('#iframeVideoInterest').text();
+                console.log(data.data + "," + preInterestNum);
+                $('.iframeVideoInterest').text(data.data)
+                if(preInterestNum < data.data){
+                    alert("点赞成功");
+                }else{
+                    alert("取消点赞成功");
+                }
+
+            }
+            console.log(data.toString());
+        }
+    });
 }
