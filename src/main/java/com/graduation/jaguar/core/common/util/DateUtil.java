@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 @Slf4j
@@ -32,6 +33,10 @@ public class DateUtil {
     public static final String NORMAL_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     public static final String ZONE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+
+    public static final String BEGIN_TIME = "00:00:00";
+
+    public static final String END_TIME = "23:59:59";
 
     /**
      * 数据库中默认时间
@@ -103,5 +108,23 @@ public class DateUtil {
         return Date.from(zonedDateTime.toInstant());
     }
 
+    public static Date getTodayBeginDate(){
+        Calendar calendar = Calendar.getInstance();
+        String dateString = "" + calendar.get(Calendar.YEAR) + "-"
+                + (calendar.get(Calendar.MONTH) + 1) + "-"
+                + calendar.get(Calendar.DAY_OF_MONTH) + " "
+                + BEGIN_TIME;
+        Date date = convertToDate(dateString,NORMAL_PATTERN);
+        return date;
+    }
 
+    public static Date getTodayEndDate(){
+        Calendar calendar = Calendar.getInstance();
+        String dateString = "" + calendar.get(Calendar.YEAR) + "-"
+                + String.format("%02d",calendar.get(Calendar.MONTH) + 1) + "-"
+                + String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)) + " "
+                + END_TIME;
+        Date date = convertToDate(dateString,NORMAL_PATTERN);
+        return date;
+    }
 }

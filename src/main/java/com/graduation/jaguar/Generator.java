@@ -18,7 +18,7 @@ public class Generator {
 
     public static String[] tables = {
 
-            "operation",
+            "classify",
     };
 
     public static void main(String[] args) {

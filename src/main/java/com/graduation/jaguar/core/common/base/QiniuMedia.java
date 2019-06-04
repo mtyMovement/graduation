@@ -11,8 +11,8 @@ public class QiniuMedia {
     private static QiniuMedia media = null;
     public static final String ACCESSKEY = "XK-p4j1naOJxdp619agD2sO8goVc20cvcQc7spU0";
     public static final String SECRETKEY = "fTcRZjuw_8mnTwnL1k22uO3HSRITdE0w6uDoSTAh";
-    public static final String BUCKETNAME = "jaguar_qiniu";
-    public static final String DOMAIN = "pqrjltppb.bkt.clouddn.com";
+    public static final String BUCKETNAME = "jaguar_qiniu_video";
+    public static final String DOMAIN = "pseglv8kw.bkt.clouddn.com";
     private String accessKey;// 设置accessKey
     private String secretKey;// 设置secretKey
     private String bucketName;// 设置存储空间

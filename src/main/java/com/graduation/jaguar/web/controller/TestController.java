@@ -9,9 +9,12 @@ import com.graduation.jaguar.core.common.DTO.VideoUploadDTO;
 import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
 import com.graduation.jaguar.core.common.enums.OperateTypeEnum;
+import com.graduation.jaguar.core.dal.domain.Classify;
+import com.graduation.jaguar.core.service.ClassifyService;
 import com.graduation.jaguar.core.service.TestService;
 import com.graduation.jaguar.core.service.VideoService;
 import com.graduation.jaguar.web.annotation.NeedAuth;
+import com.graduation.jaguar.web.annotation.NoAuth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
-@NeedAuth
 @RequestMapping("test")
 public class TestController {
 
@@ -29,6 +31,8 @@ public class TestController {
     TestService testService;
     @Autowired
     VideoService videoService;
+    @Autowired
+    ClassifyService classifyService;
 
     @RequestMapping("/testController")
     public String testController() throws Exception{
@@ -62,32 +66,43 @@ public class TestController {
         return "login";
     }
 
+    @NeedAuth
     @RequestMapping("/single")
     public String singleTest(){
         return "single";
     }
 
+    @NeedAuth
     @RequestMapping("/index")
     public String indexTest(){
         return "index";
     }
 
+    @NeedAuth
     @RequestMapping("/gallery")
     public String galleryTest(){
         return "gallery";
     }
 
+    @NeedAuth
     @RequestMapping("/contact")
     public String contactTest(){
         return "contact";
     }
 
+    @RequestMapping("/forms")
+    public String formsTest(){
+        return "forms";
+    }
+
+    @NeedAuth
     @PostMapping("/testSwitch")
     @ResponseBody
     public APIResult<VideoInfoVO> testSwitch(@RequestBody Integer videoId){
         return videoService.getVideoInfo(videoId);
     }
 
+    @NeedAuth
     @GetMapping("/upVideo")
     public String uploadVideo(@RequestParam String videoName) throws Exception {
         VideoUploadDTO videoUploadDTO = new VideoUploadDTO();
@@ -98,17 +113,63 @@ public class TestController {
         return "testController";
     }
 
+    @NeedAuth
     @RequestMapping("/testInterest")
     public String testInterest(){
-        videoService.operateRecord(1,5, OperateTypeEnum.OPERATE_VIDEO_INTEREST);
+        videoService.operateRecord(1,5, OperateTypeEnum.OPERATE_VIDEO_INTEREST,"");
         return "testController";
     }
 
+    @NeedAuth
     @GetMapping("/initSingle")
     public String initSingle(Model model,@RequestParam Integer videoId){
         VideoInfoVO video = videoService.getVideoInfo(videoId).getData();
         model.addAttribute("video", JSON.toJSONString(video));
         log.info("videoId:{},model:{}",videoId,model);
         return "single";
+    }
+
+    @NeedAuth
+    @GetMapping("/initPublicVideoSingle")
+    public String initPublicVideoSingle(Model model,@RequestParam Integer videoId){
+        VideoInfoVO video = videoService.getVideoInfo(videoId).getData();
+        model.addAttribute("video", JSON.toJSONString(video));
+        log.info("videoId:{},model:{}",videoId,model);
+        return "PublicVideoSingle";
+    }
+
+    @NoAuth
+    @GetMapping("/testClassify")
+    public String testClassify(){
+        Classify classify = new Classify();
+        classify.setClassifyName("美食");
+        String code = String.format("%04d", 5);
+        classify.setClassifyCode(code);
+        classifyService.addNewClassify(classify);
+        return "testController";
+    }
+
+    @NoAuth
+    @RequestMapping("/normalLogin")
+    public String login1Test(){
+        return "normalLogin";
+    }
+
+    @NoAuth
+    @RequestMapping("/register")
+    public String registerTest(){
+        return "register";
+    }
+
+    @NoAuth
+    @RequestMapping("/userManager")
+    public String userManagerTest(){
+        return "userManager";
+    }
+
+    @NoAuth
+    @RequestMapping("/classifyManager")
+    public String classifyManagerTest(){
+        return "classifyManager";
     }
 }

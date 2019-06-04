@@ -302,3 +302,46 @@ textarea {display:block;width:90%;height:200px; border-radius:4px;-webkit-border
 .navigation{text-align: center;margin-top: 20px;}
 .navigation ul li{display: inline-block;}
 .navigation ul li a{background-color: #fff;border: 1px solid #ddd;padding: 7px 13px;}
+
+/* ---------------------------------------------------------------------------- */
+/* ------------------------------------personal-------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+.shareDiv {
+	border: 1px solid #DDDDDD;
+	height: 100px;
+	width: 750px;
+	margin-left: 10px;
+	margin-bottom: 30px;
+}
+.shareDivSon{
+	width: 720px;
+	margin-left: 15px;
+	margin-top: 15px;
+}
+.shareWrap{
+	display: flex;
+	margin: 10px auto;
+}
+.inputShare{
+	width: 645px;
+	height: 35px;
+	border: 1px solid #DDDDDD;
+	padding: 10px;
+}
+.btnShare{
+	margin-left: 15px;
+	width: 60px;
+	height: 33px;
+	border-radius: 10px;
+	border: 1px solid #0a8cbe;
+	background-color: #0a8cbe;
+	color: #fff;
+}
+
+.commentDiv {
+	border: 1px solid #DDDDDD;
+	height: 90px;
+	width: 800px;
+	margin-bottom: 30px;
+}

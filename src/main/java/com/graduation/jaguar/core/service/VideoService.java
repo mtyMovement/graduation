@@ -4,12 +4,15 @@ package com.graduation.jaguar.core.service;/*
  @create 2019/5/12 0012
 */
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.graduation.jaguar.core.common.DTO.VideoUploadDTO;
 import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
 import com.graduation.jaguar.core.common.enums.OperateTypeEnum;
+import com.graduation.jaguar.core.common.page.PageResult;
 
 import java.util.List;
+import java.util.Map;
 
 public interface VideoService {
     /**
@@ -34,6 +37,22 @@ public interface VideoService {
     APIResult<List<VideoInfoVO>> getHottestVideoInfos(Integer limitNum);
 
     /**
+     * 获关注类型的视频(返回八个，按时间排序)
+     * @param interestTypes
+     * @param limitNum
+     * @return
+     */
+    APIResult<List<VideoInfoVO>> getInterestedVideoInfos(List<String> interestTypes, Integer limitNum);
+
+    /**
+     * 获关注用户发布的视频(返回八个，按时间排序)
+     * @param userIdList
+     * @param limitNum
+     * @return
+     */
+    APIResult<List<VideoInfoVO>> getSubscribeVideoInfos(List<Integer> userIdList, Integer limitNum);
+
+    /**
      * 获取当前最新的视频
      * @return
      */
@@ -45,5 +64,54 @@ public interface VideoService {
      * @param videoId
      * @return
      */
-    APIResult<Integer> operateRecord(Integer userId, Integer videoId, OperateTypeEnum operateTypeEnum);
+    APIResult<Integer> operateRecord(Integer userId, Integer videoId,
+                                     OperateTypeEnum operateTypeEnum, String remark);
+
+    APIResult<List<VideoInfoVO>> searchVideoByName(String videoName);
+
+    /**
+     * 加载评论
+     * @param videoId
+     * @return
+     */
+    APIResult<List<Map<String, String>>> queryCommentByVideoId(Integer videoId);
+
+    /**
+     * 获取该用户待审核视频
+     * @param page
+     * @param userId
+     * @return
+     */
+    APIResult<Page<VideoInfoVO>> getAuditVideoBuUserId(Page page, Integer userId);
+
+    /**
+     * 获取该用户已发布视频
+     * @param page
+     * @param userId
+     * @return
+     */
+    APIResult<Page<VideoInfoVO>> getPublicVideoBuUserId(Page page, Integer userId);
+
+    /**
+     * 获取该用户分享视频
+     * @param page
+     * @param userId
+     * @return
+     */
+    APIResult<Page<VideoInfoVO>> getShareVideoBuUserId(Page page, Integer userId);
+
+    /**
+     * 获取该用户点赞视频
+     * @param page
+     * @param userId
+     * @return
+     */
+    APIResult<Page<VideoInfoVO>> getInterestVideoBuUserId(Page page, Integer userId);
+
+    /**
+     * 删除视频
+     * @param videoId
+     * @return
+     */
+    APIResult personDeleteVideo(Integer videoId);
 }

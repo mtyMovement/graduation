@@ -6,7 +6,6 @@ package com.graduation.jaguar.core.common.VO;/*
 
 import lombok.Data;
 
-import java.util.Date;
 
 @Data
 public class VideoInfoVO {
@@ -20,6 +19,11 @@ public class VideoInfoVO {
      * 视频名称
      */
     private String videoName;
+
+    /**
+     * 用户id
+     */
+    private Integer userId;
 
     /**
      * 用户昵称

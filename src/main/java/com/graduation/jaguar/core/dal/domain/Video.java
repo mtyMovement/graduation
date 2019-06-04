@@ -61,7 +61,7 @@ public class Video extends BaseModel {
      * 类别(二进制)
      */
     @TableField("video_classify")
-    private Integer videoClassify;
+    private String videoClassify;
     /**
      * 0-未删除  1-已删除
      */

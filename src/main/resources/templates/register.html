@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户注册</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/loginAndRegister/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/loginAndRegister/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/loginAndRegister/css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/loginAndRegister/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/loginAndRegister/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/loginAndRegister/img/favicon.ico">
+  </head>
+  <body>
+    <div class="page login-page">
+      <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+          <div class="row">
+            <!-- Logo & Information Panel-->
+            <div class="col-lg-6">
+              <div class="info d-flex align-items-center">
+                <div class="content">
+                  <div class="logo">
+                    <h1>Dashboard</h1>
+                  </div>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                </div>
+              </div>
+            </div>
+            <!-- Form Panel    -->
+            <div class="col-lg-6 bg-white">
+              <div class="form d-flex align-items-center">
+                <div class="content">
+                  <form class="form-validate" action="javascript:registerUser()">
+                    <div class="form-group">
+                      <input id="register-username" type="text" name="registerUsername" required data-msg="Please enter your username" class="input-material">
+                      <label for="register-username" class="label-material">用户名</label>
+                    </div>
+                    <!--<div class="form-group">
+                      <input id="register-email" type="email" name="registerEmail" required data-msg="Please enter a valid email address" class="input-material">
+                      <label for="register-email" class="label-material">Email Address      </label>
+                    </div>-->
+                    <div class="form-group">
+                      <input id="register-password" type="password" name="registerPassword" required data-msg="Please enter your password" class="input-material">
+                      <label for="register-password" class="label-material">密  码        </label>
+                    </div>
+                    <div class="form-group terms-conditions">
+                        <label class="label-material">感兴趣类型        </label>
+                        <table class="table">
+                          <tbody id="classifyTable">
+                          </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-group terms-conditions">
+                      <input id="register-agree" name="registerAgree" type="radio" required value="1" data-msg="Your agreement is required" class="radio-template">
+                      <label for="register-agree">同意条款和政策</label>
+                    </div>
+                    <div class="form-group">
+                      <button id="register" type="submit" name="registerSubmit" class="btn btn-primary">Register</button>
+                    </div>
+                  </form>
+                    <small>已有账号？ </small><a href="/test/login" class="signup">登录</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyrights text-center">
+        <p>Design by <a href="https://bootstrapious.com" class="external">Bootstrapious</a>
+          <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+        </p>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="/static/loginAndRegister/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/loginAndRegister/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/static/loginAndRegister/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/loginAndRegister/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="/static/loginAndRegister/vendor/chart.js/Chart.min.js"></script>
+    <script src="/static/loginAndRegister/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <!-- Main File-->
+    <script src="/static/loginAndRegister/js/front.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            var html = "";
+            $.ajax({
+                type: 'GET',
+                url: "/register/initClassify",
+                cache: false,
+                async: true,
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    if(result.code === "700"){
+                        alert(result.message);
+                    }else{
+                        var resultData = result.data;
+                        console.log(resultData.length);
+                        for (var i = 0; i < resultData.length; i++) {
+                            var dataClassifyInfo = resultData[i];
+                            if((i + 1) % 4 === 1){
+                                html += "<tr>";
+                            }
+                            html += "<td>"
+                                +"      <input id='checkboxCustom" + i + "' type='checkbox' value=" + dataClassifyInfo.classifyCode + " checked='' class='checkbox-template'>"
+                                + "     <label for='checkboxCustom" + i + "'>" + dataClassifyInfo.classifyName + "</label>"
+                                + " </td>";
+                            if((i + 1) % 4 === 0){
+                                html += "</tr>";
+                            }
+                        }
+                        for (var j = resultData.length + 1; j % 4 > 0; j++){
+                            html += "<td></td>";
+                        }
+                        if((i + 1) % 4 > 0){
+                            html += "<td></td></tr>";
+                        }
+                        $("#classifyTable").html(html);
+                    }
+                }
+            });
+        });
+
+        function registerUser(){
+            var userName = $('#register-username').val();
+            var userPwd = $('#register-password').val();
+            var userInterest = "";
+          $.each($('input:checkbox:checked'),function(){
+            if(userInterest === ""){
+              userInterest += $(this).val();
+            }else
+            userInterest += "," + ($(this).val());
+          });
+            console.log("didi:" + userName + userPwd + userInterest.length);
+            $.ajax({
+                type: 'POST',
+                url: "/user/register",
+                data: {userName:userName, userPwd:userPwd, userInterest:userInterest},
+                //data: JSON.stringify(userName, userPwd, userInterest),
+                cache: false,
+                async: true,
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                success: function (result) {
+                    if(result.success === false){
+                        alert(result.message);
+                    }else{
+                      alert("注册成功");
+                      window.location.href = "../test/login";
+                    }
+                }
+            });
+        }
+    </script>
+  </body>
+</html>

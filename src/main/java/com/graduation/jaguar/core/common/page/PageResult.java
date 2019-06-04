@@ -20,7 +20,7 @@ public class PageResult<T> implements Serializable {
     private Integer totalCount = 0;
 
     //当前页记录数
-    private Integer pageSize = 2;
+    private Integer pageSize = 4;
 
     public PageResult() {
 
