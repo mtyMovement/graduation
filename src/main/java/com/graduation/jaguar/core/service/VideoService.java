@@ -114,4 +114,6 @@ public interface VideoService {
      * @return
      */
     APIResult personDeleteVideo(Integer videoId);
+
+    APIResult<List<VideoInfoVO>> typeVideoQueryInfo(String typeName);
 }

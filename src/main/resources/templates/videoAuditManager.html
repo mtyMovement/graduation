@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>用户管理 </title>
+    <title>视频审核 </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -21,15 +21,21 @@
     <link rel="stylesheet" href="/static/loginAndRegister/css/custom.css">
     <!-- Favicon-->
     <link rel="shortcut icon" href="/static/loginAndRegister/img/favicon.ico">
+
+    <link rel="stylesheet" href="/static/css/videoAuditManager.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
     <style type="text/css">
         .user-info {
             color: #fff;
             padding: 20px;
         }
-        .userTable{
+
+        .userTable {
             /*color: #aaa;*/
             width: 100%;
         }
+
         .table-user-info {
             color: #fff;
             display: block;
@@ -89,72 +95,22 @@
             </div>
             <!-- Sidebar Navidation Menus--><span class="heading">菜单</span>
             <ul class="list-unstyled">
-                <li class="active"><a href="#"> <i class="icon-padnote"><!--<i class="icon-home">--></i>用户管理 </a></li>
+                <li><a href="/test/userManager"> <i class="icon-padnote"><!--<i class="icon-home">--></i>用户管理 </a></li>
                 <li><a href="/test/classifyManager"> <i class="icon-grid"></i>类别管理 </a></li>
-                <li><a href="/test/videoAuditManager"> <i class="fa fa-bar-chart"></i>视频审核 </a></li>
+                <li class="active"><a href="#"> <i class="fa fa-bar-chart"></i>视频审核 </a></li>
             </ul>
         </nav>
         <div class="content-inner">
             <header class="page-header">
                 <div class="container-fluid">
-                    <h2 class="no-margin-bottom">用户管理    </h2>
+                    <h2 class="no-margin-bottom">视频审核    </h2>
                 </div>
             </header>
             <div class="userTable">
                 <div class="userTable">
-                    <div class="card-close">
-                        <div class="dropdown">
-                            <button type="button" id="closeCard3" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i>
-                            </button>
-                            <div aria-labelledby="closeCard3" class="dropdown-menu dropdown-menu-right has-shadow"><a
-                                    href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a
-                                    href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
-                        </div>
+                    <div class="video-info" id="video_audit_info">
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <form class="form-inline" action="javascript:searchUserInfo()">
-                                <div class="form-group">
-                                    <label class="col-sm-3 form-control-label" style="width: 120px">昵称: </label>
-                                    <label for="inlineFormInput" class="sr-only">用户昵称 </label>
-                                    <input id="inlineFormInput" type="text" placeholder="用户昵称"
-                                           class="mr-3 form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 form-control-label" style="width: 120px">类型: </label>
-                                    <label for="inlineFormInputGroup" class="sr-only">用户类型</label>
-                                    <input id="inlineFormInputGroup" type="text" placeholder="用户类型"
-                                           class="mr-3 form-control">
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">查询</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="user-info">
-                        <div class="table-user-info">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th>序号</th>
-                                    <th>用户ID</th>
-                                    <th>用户账号</th>
-                                    <th>用户昵称</th>
-                                    <th>用户类型</th>
-                                    <th>兴趣类型</th>
-                                    <th>创建时间</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody id="userManagerTBody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -170,6 +126,6 @@
 <script src="/static/loginAndRegister/js/charts-home.js"></script>
 <!-- Main File-->
 <script src="/static/loginAndRegister/js/front.js"></script>
-<script src="/static/js/userManager.js"></script>
+<script src="/static/js/videoAuditManager.js"></script>
 </body>
 </html>

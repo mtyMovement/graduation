@@ -79,7 +79,7 @@ function initAuditVideoDiv(resultData){
             + "     </div>"
             + " </div>";
     }
-    if(page === 1){
+    if(page === 1 && page > 0){
         $("#cuPreAudit").hide();
     }else{
         $("#cuPreAudit").show();
@@ -145,7 +145,7 @@ function initPublicVideoDiv(resultData){
             + "     </div>"
             + " </div>";
     }
-    if(page === 1){
+    if(page === 1 && page > 0){
         $("#cuPrePublic").hide();
     }else{
         $("#cuPrePublic").show();
@@ -210,7 +210,7 @@ function initShareVideoDiv(resultData){
             + "     </div>"
             + " </div>";
     }
-    if(page === 1){
+    if(page === 1 && page > 0){
         $("#cuPreShare").hide();
     }else{
         $("#cuPreShare").show();
@@ -274,7 +274,7 @@ function initInterestVideoDiv(resultData){
             + "     </div>"
             + " </div>";
     }
-    if(page === 1){
+    if(page === 1 && page > 0){
         $("#cuPreInterest").hide();
     }else{
         $("#cuPreInterest").show();

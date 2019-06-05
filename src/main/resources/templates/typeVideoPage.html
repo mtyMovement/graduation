@@ -6,7 +6,7 @@
 <!--[if IE 8 ]>
 <html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!-->
-<html lang="en"> <!--<![endif]-->
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> <!--<![endif]-->
 <head>
 
     <!-- Basic Page Needs
@@ -88,67 +88,12 @@
                     <section class="all">
                         <div>
                             <div class="header">
-                                <h2>待审核视频</h2>
+                                <h2 id="headerH2"></h2>
+                                <input type="hidden" th:value="${typeName}" id="headerTypeName"/>
                             </div>
-                            <div class="row" id="auditVideoDiv"></div>
-                            <div class="navigation">
-                                <ul>
-                                    <li><a href="#" id="preAudit"><</a></li>
-                                    <li><a href="#" id="cuPreAudit">1</a></li>
-                                    <li><a href="#" id="cuAudit">2</a></li>
-                                    <li><a href="#" id="cuNextAudit">3</a></li>
-                                    <li><a href="#" id="nextAudit">></a></li>
-                                </ul>
-                            </div>
+                            <div id="typeVideoDiv"></div>
                         </div>
 
-                        <div style="margin-top: 15px">
-                            <div class="header">
-                                <h2>已发布视频</h2>
-                            </div>
-                            <div class="row" id="publicVideoDiv"></div>
-                            <div class="navigation">
-                                <ul>
-                                    <li><a href="#" id="prePublic"><</a></li>
-                                    <li><a href="#" id="cuPrePublic">1</a></li>
-                                    <li><a href="#" id="cuPublic">2</a></li>
-                                    <li><a href="#" id="cuNextPublic">3</a></li>
-                                    <li><a href="#" id="nextPublic">></a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 15px">
-                            <div class="header">
-                                <h2>分享视频</h2>
-                            </div>
-                            <div class="row" id="shareVideoDiv" style="margin-bottom: 15px"></div>
-                            <div class="navigation">
-                                <ul>
-                                    <li><a href="#" id="preShare"><</a></li>
-                                    <li><a href="#" id="cuPreShare">1</a></li>
-                                    <li><a href="#" id="cuShare">2</a></li>
-                                    <li><a href="#" id="cuNextShare">3</a></li>
-                                    <li><a href="#" id="nextShare">></a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 15px">
-                            <div class="header">
-                                <h2>点赞视频</h2>
-                            </div>
-                            <div class="row" id="interestVideoDiv" style="margin-bottom: 15px"></div>
-                            <div class="navigation">
-                                <ul>
-                                    <li><a href="#" id="preInterest"><</a></li>
-                                    <li><a href="#" id="cuPreInterest">1</a></li>
-                                    <li><a href="#" id="cuInterest">2</a></li>
-                                    <li><a href="#" id="cuNextInterest">3</a></li>
-                                    <li><a href="#" id="nextInterest">></a></li>
-                                </ul>
-                            </div>
-                        </div>
                     </section>
                 </div>
 
@@ -287,7 +232,7 @@
     <script src="/static/js/modernizr.custom.js"></script>
     <script src="/static/js/classie.js"></script>
     <script src="/static/js/uisearch.js"></script>
-    <script src="/static/js/gallery.js"></script>
+    <script src="/static/js/typeVideoPage.js"></script>
     <script>
         new UISearch(document.getElementById('sb-search'));
     </script>
@@ -308,34 +253,6 @@
             });
 
         });
-    </script>
-
-    <script>
-        jQuery(document).ready(function () {
-            $.ajax({
-                type: 'GET',
-                url: "/video/initPageGallery",
-                cache: false,
-                async: true,
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                success: function (result) {
-                    var newestVideoResult = result.data["newestResult"];
-                    var hottestVideoResult = result.data["hottestResult"];
-                    var auditVideoResult = result.data["auditAPIResult"];
-                    var publicVideoResult = result.data["publicAPIResult"];
-                    var shareAPIResult = result.data["shareAPIResult"];
-                    var interestAPIResult = result.data["interestAPIResult"];
-                    initNewestVideos(newestVideoResult);
-                    initHottestVideos(hottestVideoResult);
-                    initAuditVideoDiv(auditVideoResult);
-                    initPublicVideoDiv(publicVideoResult);
-                    initShareVideoDiv(shareAPIResult);
-                    initInterestVideoDiv(interestAPIResult);
-                }
-            });
-        });
-
     </script>
 
 </div>

@@ -7,15 +7,20 @@ package com.graduation.jaguar.core.service.impl;/*
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.graduation.jaguar.core.common.VO.ClassifyInfoVO;
 import com.graduation.jaguar.core.common.VO.UserInfoVO;
+import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
 import com.graduation.jaguar.core.common.enums.UserTypeEnum;
+import com.graduation.jaguar.core.common.enums.VideoAuditStatusEnum;
 import com.graduation.jaguar.core.common.util.DateUtil;
 import com.graduation.jaguar.core.dal.domain.Classify;
 import com.graduation.jaguar.core.dal.domain.User;
+import com.graduation.jaguar.core.dal.domain.Video;
 import com.graduation.jaguar.core.dal.manager.impl.ClassifyManagerImpl;
 import com.graduation.jaguar.core.dal.manager.impl.UserManagerImpl;
+import com.graduation.jaguar.core.dal.manager.impl.VideoManagerImpl;
 import com.graduation.jaguar.core.service.AdminService;
 import com.graduation.jaguar.core.service.ClassifyService;
+import com.graduation.jaguar.core.service.VideoService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +33,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.util.DateUtil.now;
+
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
@@ -36,6 +43,10 @@ public class AdminServiceImpl implements AdminService {
     ClassifyService classifyService;
     @Autowired
     ClassifyManagerImpl classifyManager;
+    @Autowired
+    VideoManagerImpl videoManager;
+    @Autowired
+    VideoServiceImpl videoService;
 
     @Override
     public APIResult<List<UserInfoVO>> queryUserInfo() {
@@ -149,6 +160,36 @@ public class AdminServiceImpl implements AdminService {
             return APIResult.ok();
         }
         return APIResult.error("921", "新增类型失败");
+    }
+
+    @Override
+    public APIResult<List<VideoInfoVO>> queryAuditVideoInfo() {
+        EntityWrapper<Video> wrapper = new EntityWrapper<>();
+        wrapper.eq("video_audit_status", VideoAuditStatusEnum.PENDING_AUDIT.getCode())
+                .eq("is_deleted", 0);
+        List<Video> videoList =  videoManager.selectList(wrapper);
+        if(CollectionUtils.isNotEmpty(videoList)){
+            List<VideoInfoVO> videoInfoVOList =  videoList.stream().map(value -> videoService.buildVideoInfoVO(value))
+                    .collect(Collectors.toList());
+            return APIResult.ok(videoInfoVOList);
+        }else{
+            return APIResult.error("701", "无待审核视频");
+        }
+
+    }
+
+    @Override
+    public APIResult auditVideo(Integer videoId, Integer auditResult) {
+        Video video = videoManager.selectById(videoId);
+        video.setVideoAuditTime(now());
+        video.setModifyTime(null);
+        if(auditResult == 0){
+            video.setVideoAuditStatus(String.valueOf(VideoAuditStatusEnum.PASSED_AUDIT.getCode()));
+        }else{
+            video.setVideoAuditStatus(String.valueOf(VideoAuditStatusEnum.UNAUDITED.getCode()));
+        }
+        videoManager.updateById(video);
+        return APIResult.ok();
     }
 
     public List<UserInfoVO> buildUserInfoVo(List<User> userList){

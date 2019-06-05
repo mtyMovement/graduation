@@ -15,7 +15,7 @@ import lombok.Getter;
 public enum VideoAuditStatusEnum implements BaseEnum {
     PENDING_AUDIT(0,"待审核"),
     PASSED_AUDIT(1,"审核通过"),
-    unaudited(2,"审核不通过")
+    UNAUDITED(2,"审核不通过")
 
     ;
 

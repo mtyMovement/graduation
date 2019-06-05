@@ -6,6 +6,7 @@ package com.graduation.jaguar.web.controller;/*
 
 import com.graduation.jaguar.core.common.VO.ClassifyInfoVO;
 import com.graduation.jaguar.core.common.VO.UserInfoVO;
+import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
 import com.graduation.jaguar.core.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,4 +61,15 @@ public class AdminController {
         return adminService.addClassifyInfo(classifyName,classifyCode);
     }
 
+    @GetMapping("/videoAuditManagerQueryInfo")
+    @ResponseBody
+    public APIResult<List<VideoInfoVO>> videoAuditManagerQueryInfo(){
+        return adminService.queryAuditVideoInfo();
+    }
+
+    @GetMapping("/auditVideo")
+    @ResponseBody
+    public APIResult auditVideo(Integer videoId, Integer auditResult){
+        return adminService.auditVideo(videoId, auditResult);
+    }
 }

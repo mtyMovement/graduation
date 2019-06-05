@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Material Admin by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/loginAndRegister/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/loginAndRegister/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/loginAndRegister/css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/loginAndRegister/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/loginAndRegister/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/loginAndRegister/img/favicon.ico">
+</head>
+<body>
+<div class="page login-page">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>Dashboard</h1>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <form method="post" class="form-validate">
+                                <span>若未登录过，请直接点击登录生成游客账号</span><br>
+                                <div class="form-group">
+                                    <input id="login-username" type="username" name="loginUserName" required
+                                           data-msg="Please enter your username" class="input-material">
+                                    <label for="login-username" class="label-material">游客账号</label>
+                                </div>
+                                <a id="login" href="javascript:normalLogin()" class="btn btn-primary">登录</a>
+                                <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyrights text-center">
+        <p>Design by <a href="#" class="external">Bootstrapious</a>
+            <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+        </p>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/loginAndRegister/vendor/jquery/jquery.min.js"></script>
+<script src="/static/loginAndRegister/vendor/popper.js/umd/popper.min.js"></script>
+<script src="/static/loginAndRegister/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/loginAndRegister/vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="/static/loginAndRegister/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/loginAndRegister/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+
+<script src="/static/loginAndRegister/js/front.js"></script>
+
+<script>
+    function normalLogin() {
+        if($('#login-username').val() === ""){
+            var r = confirm("即将自动生成账号，是否确认？");
+            if (r === true) {
+                $.ajax({
+                    type: 'GET',
+                    url: "/user/normalFirstLogin",
+                    cache: false,
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === "200") {
+                            alert("新游客号为：" + data.data.userNo);
+                            window.location.href = "../test/index";
+                        }
+                        if (data.success === false){
+                            alert(data.message);
+                        }
+                    }
+                });
+            }
+        }else{
+            var userNo = $('#login-username').val();
+            console.log("userNo:" + userNo);
+            $.ajax({
+                type: 'GET',
+                url: "/user/normalLogin",
+                data: {userNo:userNo},
+                cache: false,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.code === "200") {
+                        //localStorage.setItem("user", JSON.stringify(data.data));
+                        window.location.href = "../test/index";
+                    }
+                    if (data.success === false){
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

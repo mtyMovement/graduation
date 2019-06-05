@@ -289,4 +289,33 @@ public class VideoController {
     public APIResult personDeleteVideo(Integer videoId){
         return videoService.personDeleteVideo(videoId);
     }
+
+    @NeedAuth
+    @GetMapping("/typeVideoQueryInfo")
+    @ResponseBody
+    public APIResult typeVideoQueryInfo(String typeName){
+        Map result = new HashMap();
+        APIResult hottestAPIResult = videoService.getHottestVideoInfos(3);
+        if(!hottestAPIResult.isSuccess()){
+            return APIResult.error(hottestAPIResult.getCode(),hottestAPIResult.getMessage());
+        }else{
+            result.put("hottestResult",hottestAPIResult.getData());
+        }
+
+        APIResult newestAPIResult = videoService.getNewestVideoInfos(3);
+        if(!newestAPIResult.isSuccess()){
+            return APIResult.error(newestAPIResult.getCode(),newestAPIResult.getMessage());
+        }else{
+            result.put("newestResult",newestAPIResult.getData());
+        }
+
+        APIResult typeVideoAPIResult = videoService.typeVideoQueryInfo(typeName);
+        if(!typeVideoAPIResult.isSuccess()){
+            return APIResult.error(typeVideoAPIResult.getCode(),typeVideoAPIResult.getMessage());
+        }else{
+            result.put("typeVideoAPIResult",typeVideoAPIResult.getData());
+        }
+
+        return APIResult.ok(result);
+    }
 }

@@ -18,6 +18,7 @@ import com.graduation.jaguar.core.dal.domain.Video;
 import com.graduation.jaguar.core.dal.manager.impl.OperationManagerImpl;
 import com.graduation.jaguar.core.dal.manager.impl.UserManagerImpl;
 import com.graduation.jaguar.core.dal.manager.impl.VideoManagerImpl;
+import com.graduation.jaguar.core.service.ClassifyService;
 import com.graduation.jaguar.core.service.VideoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
@@ -45,6 +46,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     OperationManagerImpl operationManager;
+
+    @Autowired
+    ClassifyService classifyService;
 
     @Override
     @Transactional
@@ -97,6 +101,7 @@ public class VideoServiceImpl implements VideoService {
         EntityWrapper<Video> wrapper = new EntityWrapper<>();
         wrapper.in("video_classify", interestTypes)
                 .eq("is_deleted", 0)
+                .eq("video_audit_status", VideoAuditStatusEnum.PASSED_AUDIT.getCode())
                 .orderBy("video_audit_time")
                 .last("limit " + limitNum);
         List<Video> videoList =  videoManager.selectList(wrapper);
@@ -114,13 +119,14 @@ public class VideoServiceImpl implements VideoService {
         EntityWrapper<Video> wrapper = new EntityWrapper<>();
         wrapper.in("user_id", userIdList)
                 .eq("is_deleted", 0)
+                .eq("video_audit_status", VideoAuditStatusEnum.PASSED_AUDIT.getCode())
                 .orderBy("video_audit_time", false)
                 .last("limit " + limitNum);
         List<Video> videoList =  videoManager.selectList(wrapper);
         List<VideoInfoVO> videoInfoVOS = videoList.stream()
                 .map(videoValue -> buildVideoInfoVO(videoValue))
                 .collect(Collectors.toList());
-        if(CollectionUtils.isEmpty(videoInfoVOS)){
+        if(CollectionUtils.isNotEmpty(videoInfoVOS)){
             return APIResult.ok(videoInfoVOS);
         }
         return APIResult.ok();
@@ -173,7 +179,8 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public APIResult<List<VideoInfoVO>> searchVideoByName(String videoName) {
         EntityWrapper<Video> wrapper = new EntityWrapper<>();
-        wrapper.like("video_name", videoName);
+        wrapper.like("video_name", videoName)
+                .eq("video_audit_status", VideoAuditStatusEnum.PASSED_AUDIT.getCode());
         List<Video> videoList =  videoManager.selectList(wrapper);
         List<VideoInfoVO> videoInfoVOList = new ArrayList<>();
         if(CollectionUtils.isEmpty(videoList)){
@@ -330,6 +337,22 @@ public class VideoServiceImpl implements VideoService {
         }
 
         return APIResult.ok();
+    }
+
+    @Override
+    public APIResult<List<VideoInfoVO>> typeVideoQueryInfo(String typeName) {
+        String code = classifyService.getClassifyCodeByName(typeName);
+        EntityWrapper<Video> wrapper = new EntityWrapper<>();
+        wrapper.eq("video_classify", code)
+                .eq("is_deleted", 0);
+        List<Video> videoList = videoManager.selectList(wrapper);
+        if(CollectionUtils.isEmpty(videoList)){
+            return APIResult.error("711", "暂无该类型视频");
+        }
+        List<VideoInfoVO> videoInfoVOList = videoList.stream()
+                .map(value -> buildVideoInfoVO(value))
+                .collect(Collectors.toList());
+        return APIResult.ok(videoInfoVOList);
     }
 
     public VideoInfoVO buildVideoInfoVO(Video video){

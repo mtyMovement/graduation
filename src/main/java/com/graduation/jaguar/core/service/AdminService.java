@@ -6,6 +6,7 @@ package com.graduation.jaguar.core.service;/*
 
 import com.graduation.jaguar.core.common.VO.ClassifyInfoVO;
 import com.graduation.jaguar.core.common.VO.UserInfoVO;
+import com.graduation.jaguar.core.common.VO.VideoInfoVO;
 import com.graduation.jaguar.core.common.entity.APIResult;
 
 import java.util.List;
@@ -22,4 +23,8 @@ public interface AdminService {
     APIResult<List<ClassifyInfoVO>> queryClassifyInfo(String classifyName, String classifyCode);
 
     APIResult addClassifyInfo(String classifyName, String classifyCode);
+
+    APIResult<List<VideoInfoVO>> queryAuditVideoInfo();
+
+    APIResult auditVideo(Integer videoId, Integer auditResult);
 }

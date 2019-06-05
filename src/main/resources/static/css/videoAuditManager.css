@@ -1,0 +1,25 @@
+.video_audit_row{
+    display: flex;
+    border: 1px solid #DDDDDD;
+    margin: 10px auto;
+}
+
+.video_audit_row_item{
+    border: 1px solid #DDDDDD;
+    width: 240px;
+    height: 200px;
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+
+.btnShare{
+    margin-left: 15px;
+    width: 60px;
+    height: 33px;
+    border-radius: 10px;
+    border: 1px solid #0a8cbe;
+    background-color: #0a8cbe;
+    color: #fff;
+}
+

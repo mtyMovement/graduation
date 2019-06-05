@@ -104,13 +104,13 @@ public class TestController {
 
     @NeedAuth
     @GetMapping("/upVideo")
-    public String uploadVideo(@RequestParam String videoName) throws Exception {
+    @ResponseBody
+    public APIResult uploadVideo(@RequestParam String videoName) throws Exception {
         VideoUploadDTO videoUploadDTO = new VideoUploadDTO();
         videoUploadDTO.setUserId(1);
-        videoUploadDTO.setVideoAddress("E:/work/video/" + videoName + ".mp4");
+        videoUploadDTO.setVideoAddress("E:/work/video/" + videoName);
         log.info("uploadVideo,videoName:{},videoUploadDTO:{}",videoName, videoUploadDTO);
-        videoService.uplaodVideo(videoUploadDTO);
-        return "testController";
+        return videoService.uplaodVideo(videoUploadDTO);
     }
 
     @NeedAuth
@@ -118,6 +118,14 @@ public class TestController {
     public String testInterest(){
         videoService.operateRecord(1,5, OperateTypeEnum.OPERATE_VIDEO_INTEREST,"");
         return "testController";
+    }
+
+    @NeedAuth
+    @GetMapping("/initTypeVideoPage")
+        public String initTypeVideoPage(Model model,@RequestParam String typeName){
+            model.addAttribute("typeName", typeName);
+            log.info("typeName:{},model:{}",typeName,model);
+            return "typeVideoPage";
     }
 
     @NeedAuth
@@ -171,5 +179,11 @@ public class TestController {
     @RequestMapping("/classifyManager")
     public String classifyManagerTest(){
         return "classifyManager";
+    }
+
+    @NoAuth
+    @RequestMapping("/videoAuditManager")
+    public String videoAuditManagerTest(){
+        return "videoAuditManager";
     }
 }
